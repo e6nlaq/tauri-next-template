@@ -6,9 +6,12 @@ use tauri_specta::{collect_commands, Builder};
 #[specta::specta]
 fn greet(name: &str) -> String {
     if name.is_empty() {
-        return "Hi :) please enter your name!".to_string();
+        "Hi :) please enter your name!".to_string()
+    } else if name.len() > 50 {
+        "Wow :O your name is too long!".to_string()
+    } else {
+        format!("Hello, {}!", name)
     }
-    format!("Hello, {}!", name)
 }
 
 #[tauri::command]
@@ -49,15 +52,13 @@ pub fn run() {
     //     .run(tauri::generate_context!())
     //     .expect("error while running tauri applicationcom.tauri.dev");
     tauri::Builder::default()
-        // and finally tell Tauri how to invoke them
+        .plugin(tauri_plugin_dialog::init())
         .invoke_handler(builder.invoke_handler())
         .setup(move |app| {
-            // This is also required if you want to use events
             builder.mount_events(app);
 
             Ok(())
         })
-        // on an actual app, remove the string argument
         .run(tauri::generate_context!("tauri.conf.json"))
         .expect("error while running tauri application");
 }

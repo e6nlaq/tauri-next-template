@@ -6,18 +6,19 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { commands } from "@/bindings";
+import { message } from "@tauri-apps/plugin-dialog";
 
 export default function Home() {
     const [name, setName] = useState("");
-    const [greet, setGreet] = useState("");
 
-    async function getGreet() {
-        setGreet(await commands.greet(name));
+    async function greet() {
+        const greetMessage = await commands.greet(name);
+        await message(greetMessage, { title: "Greet" });
     }
 
     useEffect(() => {
         const setUserName = async () => {
-            setName(await commands.whoami());
+            setName((await commands.whoami()).trim());
             console.log("Hello", await commands.whoami());
         };
         setUserName();
@@ -44,9 +45,8 @@ export default function Home() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                <Button onClick={getGreet}>Greet</Button>
+                <Button onClick={greet}>Greet</Button>
             </div>
-            <p>{greet}</p>
         </div>
     );
 }
