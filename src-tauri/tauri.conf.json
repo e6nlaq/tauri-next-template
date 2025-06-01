@@ -36,9 +36,6 @@
     "windows": {
       "wix": {
         "language": "ja-JP"
-      },
-      "nsis":{
-        "languages": ["ja-JP"]
       }
     }
   }

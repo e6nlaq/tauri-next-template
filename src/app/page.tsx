@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { sourceCode } from "@/lib/css-font";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { commands } from "@/bindings";
 
@@ -14,6 +14,14 @@ export default function Home() {
     async function getGreet() {
         setGreet(await commands.greet(name));
     }
+
+    useEffect(() => {
+        const setUserName = async () => {
+            setName(await commands.whoami());
+            console.log("Hello", await commands.whoami());
+        };
+        setUserName();
+    }, []);
 
     return (
         <div className="flex flex-col gap-y-16 justify-center items-center">
@@ -33,6 +41,7 @@ export default function Home() {
             <div className="flex gap-x-2">
                 <Input
                     placeholder="Your name"
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
                 <Button onClick={getGreet}>Greet</Button>

@@ -1,3 +1,4 @@
+use std::process::{Command, Output};
 use specta_typescript::Typescript;
 use tauri_specta::{collect_commands, Builder};
 
@@ -10,11 +11,23 @@ fn greet(name: &str) -> String {
     format!("Hello, {}!", name)
 }
 
+#[tauri::command]
+#[specta::specta]
+fn whoami() -> String {
+    let output: Output = Command::new("whoami")
+        .output()
+        .expect("failed to execute process");
+
+    let info: String = String::from_utf8(output.stdout).unwrap();
+    let username: &str = info.split("\\").collect::<Vec<&str>>()[1];
+    return String::from(username);
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let builder = Builder::<tauri::Wry>::new()
         // Then register them (separated by a comma)
-        .commands(collect_commands![greet,]);
+        .commands(collect_commands![greet, whoami]);
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
     builder
