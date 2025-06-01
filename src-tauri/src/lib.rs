@@ -21,9 +21,14 @@ fn whoami() -> String {
         .output()
         .expect("failed to execute process");
 
-    let info: String = String::from_utf8(output.stdout).unwrap();
-    let username: &str = info.split("\\").collect::<Vec<&str>>()[1];
-    return String::from(username);
+    if cfg!(windows) {
+        let info: String = String::from_utf8(output.stdout).unwrap();
+        let username: &str = info.split("\\").collect::<Vec<&str>>()[1];
+        return String::from(username);
+    } else {
+        let username: String = String::from_utf8(output.stdout).unwrap();
+        return username;
+    }
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
