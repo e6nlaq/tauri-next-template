@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "tauri-next",
+  "productName": "tauri-next-template",
   "version": "0.1.0",
-  "identifier": "e6nlaq.tauri.next",
+  "identifier": "e6nlaq.tauri-next.template",
   "build": {
     "frontendDist": "../out",
     "devUrl": "http://localhost:3000",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Tauri with Next.js",
+        "title": "Tauri + Next.js",
         "width": 800,
         "height": 600,
         "resizable": true,
@@ -32,6 +32,14 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "windows": {
+      "wix": {
+        "language": "ja-JP"
+      },
+      "nsis":{
+        "languages": ["ja-JP"]
+      }
+    }
   }
 }
