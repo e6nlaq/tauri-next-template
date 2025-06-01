@@ -1,5 +1,4 @@
 use std::process::{Command, Output};
-use specta_typescript::Typescript;
 use tauri_specta::{collect_commands, Builder};
 
 #[tauri::command]
@@ -39,7 +38,7 @@ pub fn run() {
 
     #[cfg(debug_assertions)] // <- Only export on non-release builds
     builder
-        .export(Typescript::default(), "../src/bindings.ts")
+        .export(specta_typescript::Typescript::default(), "../src/bindings.ts")
         .expect("Failed to export typescript bindings");
 
     // tauri::Builder::default()
